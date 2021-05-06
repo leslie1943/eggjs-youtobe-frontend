@@ -84,6 +84,25 @@ svg,
   text-transform: uppercase;
   letter-spacing: 1.1px;
 }
+.gspRov .loadingButtonFalse {
+  padding: 0.4rem 1rem;
+  background: tomato;
+  color: #fff;
+  border: 1px solid tomato;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+}
+.gspRov .loadingButtonTrue {
+  padding: 0.4rem 1rem;
+  background: #c00;
+  color: #fff;
+  border: 1px solid #c00;
+  border-radius: 3px;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+}
+
 button {
   font-family: 'Fira Sans', sans-serif;
   font-size: 1rem;
