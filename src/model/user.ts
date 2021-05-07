@@ -1,5 +1,5 @@
 import { login } from '@/api/user'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
 // import { useStore } from 'vuex'
 import { useStore } from '@/store'
@@ -13,6 +13,7 @@ export const useLogin = () => {
   // store.state.user.age
 
   const router = useRouter()
+  const route = useRoute()
 
   const errors = ref([])
   const isLoading = ref(false)
@@ -25,12 +26,14 @@ export const useLogin = () => {
     errors.value = []
     isLoading.value = true
     try {
+      // 登录并持久化登录信息
       const { data } = await login(user)
-      console.info('data', data)
       store.commit('setUser', data.user)
-      router.push({ name: 'home' })
+
+      // 登录成功跳转
+      const redirect = (route.query.redirect || '/') as string
+      router.push({ path: redirect })
     } catch (err) {
-      console.info(err.response)
       if (err.response.status === 422) {
         errors.value = err.response.data
       }

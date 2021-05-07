@@ -8,13 +8,13 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://res.cloudinary.com/tylerdurden/video/upload/v1610602989/youutbeclone/jcxdkn7kwykw2oyk95up.jpg"
+              src="https://img2.baidu.com/it/u=960273510,4202420586&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
               <div class="channel-avatar">
                 <img
-                  src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+                  src="https://img0.baidu.com/it/u=3949781130,170972349&fm=26&fmt=auto&gp=0.jpg"
                   alt="channel avatar"
                   class="sc-AxhCb eSwYtm"
                   style="margin-right: 0.8rem"
@@ -33,13 +33,13 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://res.cloudinary.com/tylerdurden/video/upload/v1610602948/youutbeclone/oyd7npz8vjcspr2musrl.jpg"
+              src="https://img1.baidu.com/it/u=2386928961,1703210503&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
               <div class="channel-avatar">
                 <img
-                  src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+                  src="https://img0.baidu.com/it/u=3949781130,170972349&fm=26&fmt=auto&gp=0.jpg"
                   alt="channel avatar"
                   class="sc-AxhCb eSwYtm"
                   style="margin-right: 0.8rem"
@@ -58,13 +58,13 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://res.cloudinary.com/tylerdurden/video/upload/v1610602919/youutbeclone/ahgq3a0glak3sjahvx6n.jpg"
+              src="https://img2.baidu.com/it/u=3487900376,4205125195&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
               <div class="channel-avatar">
                 <img
-                  src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+                  src="https://img0.baidu.com/it/u=3949781130,170972349&fm=26&fmt=auto&gp=0.jpg"
                   alt="channel avatar"
                   class="sc-AxhCb eSwYtm"
                   style="margin-right: 0.8rem"
@@ -83,13 +83,13 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://res.cloudinary.com/tylerdurden/video/upload/v1610602785/youutbeclone/bnzylyplrysa8kmymvye.jpg"
+              src="https://img0.baidu.com/it/u=3966734296,1458622362&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
               <div class="channel-avatar">
                 <img
-                  src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+                  src="https://img0.baidu.com/it/u=3949781130,170972349&fm=26&fmt=auto&gp=0.jpg"
                   alt="channel avatar"
                   class="sc-AxhCb eSwYtm"
                   style="margin-right: 0.8rem"
@@ -108,13 +108,13 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://res.cloudinary.com/tylerdurden/video/upload/v1610602720/youutbeclone/xrtkzszgbffj6hbtwdju.jpg"
+              src="https://img2.baidu.com/it/u=4172115989,873202582&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
               <div class="channel-avatar">
                 <img
-                  src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+                  src="https://img0.baidu.com/it/u=3949781130,170972349&fm=26&fmt=auto&gp=0.jpg"
                   alt="channel avatar"
                   class="sc-AxhCb eSwYtm"
                   style="margin-right: 0.8rem"

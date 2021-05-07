@@ -127,21 +127,21 @@
       <a href="/channel/17396dbd-8cb2-4866-804c-f1c928adc200"
         ><div class="channel">
           <img
-            src="https://res.cloudinary.com/tylerdurden/image/upload/v1610602675/youutbeclone/cyytoyb0dtzouizokimz.jpg"
+            src="https://img1.baidu.com/it/u=2871066962,667820075&fm=26&fmt=auto&gp=0.jpg"
             alt="avatar"
           /><span>manikandanraji</span>
         </div></a
       ><a href="/channel/bcb6ce6e-2868-4e45-b4ac-d58b84ee22de"
         ><div class="channel">
           <img
-            src="https://res.cloudinary.com/douy56nkf/image/upload/v1594060920/defaults/txxeacnh3vanuhsemfc8.png"
+            src="https://img2.baidu.com/it/u=3761335231,1474741436&fm=26&fmt=auto&gp=0.jpg"
             alt="avatar"
           /><span>gamer</span>
         </div></a
       ><a href="/channel/0b39ae9c-611b-41e9-99f3-b9e5c1b15596"
         ><div class="channel">
           <img
-            src="https://res.cloudinary.com/douy56nkf/image/upload/v1594060920/defaults/txxeacnh3vanuhsemfc8.png"
+            src="https://img1.baidu.com/it/u=1884579954,3062285351&fm=26&fmt=auto&gp=0.jpg"
             alt="avatar"
           /><span>zhishiqu</span>
         </div></a
