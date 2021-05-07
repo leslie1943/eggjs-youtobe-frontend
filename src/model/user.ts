@@ -1,9 +1,19 @@
 import { login } from '@/api/user'
 import { useRouter } from 'vue-router'
 import { reactive, ref } from 'vue'
+// import { useStore } from 'vuex'
+import { useStore } from '@/store'
 
 export const useLogin = () => {
+  /**
+   * store
+   */
+  const store = useStore()
+  // store.state.count = 1
+  // store.state.user.age
+
   const router = useRouter()
+
   const errors = ref([])
   const isLoading = ref(false)
   const user = reactive({
@@ -17,6 +27,7 @@ export const useLogin = () => {
     try {
       const { data } = await login(user)
       console.info('data', data)
+      store.commit('setUser', data.user)
       router.push({ name: 'home' })
     } catch (err) {
       console.info(err.response)
