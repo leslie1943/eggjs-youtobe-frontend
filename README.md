@@ -21,3 +21,11 @@ declare module '*.vue' {
 - .`env.development`: `npm run serve` 加载的环境变量配置文件
 - `.env.production`: `npm run build` 加载的环境变量配置文件
 - 配置的变量名称以`VUE_APP_`开头: `VUE_APP_API_BASE_URL=http://127.0.0.1:7001`
+
+
+### TypeScript for Vuex
+- https://next.vuex.vuejs.org/guide/typescript-support.html
+- steps:
+1. Define the typed `InjectionKey`
+2. Provide the typed `InjectionKey` when installing a store to the Vue app
+3. Pass the typed `InjectionKey` to the `useStore` method

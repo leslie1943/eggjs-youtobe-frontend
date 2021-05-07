@@ -7,7 +7,7 @@ interface LoginInput {
 }
 
 // 返回User
-interface User {
+export interface User {
   email: string
   token: string
   usernmae: string
