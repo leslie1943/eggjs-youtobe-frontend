@@ -13,6 +13,7 @@
           <div>
             <label for="video-upload">
               <svg
+                @click="handleShowUpload"
                 viewBox="0 0 24 24"
                 preserveAspectRatio="xMidYMid meet"
                 height="27"
@@ -68,17 +69,26 @@
       </template>
     </ul>
   </div>
+  <UploadVideo v-if="isUploadShow" @close="isUploadShow = false" />
 </template>
 
 <script lang="ts">
 import { useStore } from '@/store/index'
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
+import UploadVideo from '@/components/UploadVideo/index.vue'
 
 export default defineComponent({
+  name: 'AppHeader',
+  components: { UploadVideo },
   setup() {
     const store = useStore()
     const { user } = store.state
-    return { user }
+    const isUploadShow = ref(false)
+
+    const handleShowUpload = () => {
+      isUploadShow.value = true
+    }
+    return { user, handleShowUpload, isUploadShow }
   }
 })
 </script>

@@ -29,3 +29,13 @@ declare module '*.vue' {
 1. Define the typed `InjectionKey`
 2. Provide the typed `InjectionKey` when installing a store to the Vue app
 3. Pass the typed `InjectionKey` to the `useStore` method
+
+
+### 下载视频SDK
+- 放置到`public`目录下
+- 在`index.html`中引入SDK
+```html
+<script src="/aliyun-upload-sdk-1.5.2/lib/aliyun-oss-sdk-6.13.0.min.js"></script>
+<script src="/aliyun-upload-sdk-1.5.2/lib/es6-promise.min.js"></script>
+<script src="/aliyun-upload-sdk-1.5.2/aliyun-upload-sdk-1.5.2.min.js"></script>
+```
