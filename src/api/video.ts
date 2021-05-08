@@ -13,18 +13,39 @@ export interface CreateVideoInput {
 }
 
 // 视频格式
-interface Video {
+
+// 返回数据格式
+
+interface VideoAuth {
+  _id: string
+  username: string
+  avatar: string
+  isSubscribed: boolean
+  subscribersCount: number
+}
+
+export interface Video {
   _id: string
   title: string
   description: string
   vodVideoId: string
+  commentsCount: number
+  createAt: string
+  dislikesCount: number
+  likesCount: number
+  isLiked: boolean
+  isDisliked: boolean
+  viewsCount: number
+  user: VideoAuth
 }
-
-// 返回数据格式
-interface CreateVideoPayload {
+interface VideoPayload {
   video: Video
 }
 
 export const createVideo = (data: CreateVideoInput) => {
-  return request.post<CreateVideoPayload>('/api/v1/videos', data)
+  return request.post<VideoPayload>('/api/v1/videos', data)
+}
+
+export const getVideo = (videoId: string) => {
+  return request.get<VideoPayload>(`/api/v1/videos/${videoId}`)
 }

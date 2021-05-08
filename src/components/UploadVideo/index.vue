@@ -49,14 +49,17 @@
   </div>
 </template>
 <script lang="ts">
+/* eslint-disable */
 import { defineComponent, reactive, ref } from 'vue'
-import { createUploader } from '@/utils/video'
-import { CreateVideoInput } from '@/api/video'
+import { CreateVideoInput, createVideo } from '@/api/video'
+import { useRouter } from 'vue-router'
+import { createUploadVideo, refreshUploadVideo } from '@/api/vod'
 
 export default defineComponent({
   name: 'UploadVideo',
   setup(props, context) {
     console.info('props', props)
+    const router = useRouter()
     /**
      * 使用 ref 的时候
      * 1: 确保定义的名称与template中定义的ref一致
@@ -76,6 +79,109 @@ export default defineComponent({
       context.emit('close', false)
     }
 
+    const createUploader = () => {
+      const uploader = new window.AliyunUpload.Vod({
+        // 阿里账号ID, 必须有值
+        userId: '122',
+        // 分片大小默认1 MB, 不能小于100 KB
+        partSize: 1048576,
+        // 并行上传分片个数, 默认5
+        parallel: 5,
+        // 网络原因失败时, 重新上传次数, 默认为3
+        retryCount: 3,
+        // 网络原因失败时, 重新上传间隔时间, 默认为2秒
+        retryDuration: 2,
+        // 是否上报上传日志到视频点播, 默认为true
+        enableUploadProgress: true,
+        // 🚀 开始上传
+        onUploadstarted: async function (uploadInfo: any) {
+          console.info(
+            `onUploadStarted:${uploadInfo.file.name}, endpoint:${uploadInfo.endpoint}, bucket:${uploadInfo.bucket}, object:${uploadInfo.object}`
+          )
+          /**
+           * 💛 上传方式1
+           * 需要根据 uploadInfo.videoId 是否有值,
+           * 调用视频点播的不同接口获取 uploadauth 和 uploadAddress,
+           * 如果 videoId 有值, 调用刷新视频上传凭证接口, 否则调用创建视频上传凭证接口
+           */
+          if (uploadInfo.videoId) {
+            // 如果uploadInfo.videoId 存在, 调用刷新视频上传凭证接口
+            const { data } = await refreshUploadVideo(uploadInfo.videoId)
+            uploader.setUploadAuthAndAddress(
+              uploadInfo,
+              data.UploadAuth,
+              data.UploadAddress,
+              data.VideoId
+            )
+          } else {
+            // 💛 如果uploadInfo.videoId不存在, 调用获取视频上传地址和凭证接口
+            // 从视频点播服务获取的 uploadAuth, uploadAddress 和 videoId, 设置到 SDK 里
+            const { data } = await createUploadVideo({
+              Title: uploadInfo.file.name,
+              FileName: uploadInfo.file.name
+            })
+            uploader.setUploadAuthAndAddress(
+              uploadInfo,
+              data.UploadAuth,
+              data.UploadAddress,
+              data.VideoId
+            )
+          }
+        },
+        // 🚀 文件上传成功 => 保存到后台
+        onUploadSucceed: async function (uploadInfo: any) {
+          console.info('uploadInfo', uploadInfo)
+          console.info(
+            `onUploadSucceed: file: ${uploadInfo.file.name} , endpoint:${uploadInfo.endpoint}, bucket: ${uploadInfo.bucket}, object: ${uploadInfo.object}`
+          )
+          video.vodVideoId = uploadInfo.videoId // 视频Id
+          video.cover = uploadInfo.bucket // 视频封面
+
+          // 提交给后台保存视频
+          const { data } = await createVideo(video)
+          console.info('保存成功 data', data)
+          router.push({ name: 'watch', params: { videoId: data.video._id } })
+          handleClose()
+        },
+        // 🚀 文件上传失败
+        onUploadFailed: function (uploadInfo: any, code: any, message: any) {
+          console.info(
+            `onUploadFailed: file: ${uploadInfo.file.name} ,code:${code}, message: ${message}`
+          )
+        },
+        // 🚀 文件上传进度, 单位：字节
+        onUploadProgress: function (
+          uploadInfo: any,
+          totalSize: any,
+          loadedPercent: any
+        ) {
+          console.log(
+            'onUploadProgress:file:' +
+              uploadInfo.file.name +
+              ', fileSize:' +
+              totalSize +
+              ', percent:' +
+              Math.ceil(loadedPercent * 100) +
+              '%'
+          )
+        },
+        // 🚀 上传凭证超时
+        onUploadTokenExpired: async function (uploadInfo: any) {
+          console.log('onUploadTokenExpired')
+          // 实现时, 根据 uploadInfo.videoId 调用刷新视频上传凭证接口重新获取 UploadAuth
+          // 从点播服务刷新的 uploadAuth, 设置到SDK里
+          const { data } = await refreshUploadVideo(uploadInfo.videoId)
+          uploader.resumeUploadWithAuth(data.UploadAuth)
+        },
+        // 🚀 全部文件上传结束
+        onUploadEnd: function (uploadInfo: any) {
+          console.log('OnUploadEnd: File upload Finish.')
+        }
+      })
+
+      return uploader
+    }
+
     // 文件修改 Event
     const handleFileChange = () => {
       // eslint-disable-next-line
@@ -86,7 +192,7 @@ export default defineComponent({
 
     const handleSubmit = async () => {
       // 获取 uploader 上传实例
-      const uploader = createUploader(video)
+      const uploader = createUploader()
 
       // 🚀 添加上传文件
       const paramData = JSON.stringify({ Vod: {} })

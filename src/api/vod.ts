@@ -29,3 +29,32 @@ export const refreshUploadVideo = (videoId: string) => {
     { params: { videoId } }
   )
 }
+
+// 获取播放凭证
+
+interface VideoMeta {
+  CoverURL: string
+  Duration: number
+  Status: string
+  Title: string
+  VideoId: string
+}
+
+export interface VideoPlayAuthPayload {
+  RequestId: string
+  PlayAuth: string
+  VideoMeta: VideoMeta
+}
+
+/**
+ *
+ * @param vodVideoId vodId,阿里云的视频ID
+ * @returns
+ */
+export const getVideoPlayAuth = (vodVideoId: string) => {
+  return request.get<VideoPlayAuthPayload>('/api/v1/vod/GetVideoPlayAuth', {
+    params: {
+      VideoId: vodVideoId
+    }
+  })
+}

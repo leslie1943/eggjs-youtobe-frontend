@@ -14,11 +14,17 @@ const routes: Array<RouteRecordRaw> = [
           import(/* webpackChunkName: "home" */ '@/views/home/index.vue')
       },
       {
-        path: '/profile', // 默认子路由
+        path: 'profile', //
         name: 'profile',
         component: () =>
           import(/* webpackChunkName: "profile" */ '@/views/profile/index.vue'),
         meta: { requiresAuth: true }
+      },
+      {
+        path: 'watch/:videoId', //
+        name: 'watch',
+        component: () =>
+          import(/* webpackChunkName: "watch" */ '@/views/watch/index.vue')
       }
     ]
   },
