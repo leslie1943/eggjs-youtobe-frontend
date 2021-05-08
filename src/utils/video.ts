@@ -3,8 +3,13 @@
 import { CreateVideoInput } from '@/api/video'
 import { createUploadVideo, refreshUploadVideo } from '@/api/vod'
 import { createVideo } from '@/api/video'
+import { Router } from 'vue-router'
 
-export const createUploader = (video: CreateVideoInput) => {
+export const createUploader = (
+  video: CreateVideoInput,
+  router: Router,
+  close: Function
+) => {
   const uploader = new window.AliyunUpload.Vod({
     // 阿里账号ID, 必须有值
     userId: '122',
@@ -74,6 +79,8 @@ export const createUploader = (video: CreateVideoInput) => {
       // 提交给后台保存视频
       const { data } = await createVideo(video)
       console.info('保存成功 data', data)
+      router.push({ name: 'watch', params: { videoId: data.video._id } })
+      close()
     },
     // 🚀 文件上传失败
     onUploadFailed: function(uploadInfo: any, code: any, message: any) {
