@@ -39,3 +39,21 @@ interface RegisterInput {
 export const register = (data: RegisterInput) => {
   return request.post<LoginOutput>('/api/v1/users', data)
 }
+
+interface SubscribeUser {
+  user: {
+    username: string
+    email: string
+    avatar: string
+    cover: string
+    channelDescription: string
+    subscribersCount: string
+  }
+}
+export const subscribe = (userId: string) => {
+  return request.post<SubscribeUser>(`/api/v1/users/${userId}/subscribe`)
+}
+
+export const unsubscribe = (userId: string) => {
+  return request.delete<SubscribeUser>(`/api/v1/users/${userId}/subscribe`)
+}

@@ -133,6 +133,7 @@ button {
   display: none;
   padding: 0.8rem 1rem;
 }
+
 .flex-row {
   display: flex;
   -webkit-box-align: center;
@@ -760,4 +761,13 @@ input:focus, textarea:focus, button:focus, video:focus {
 
 textarea {
   resize: none;
+}
+
+.subscribe-btn {
+  background: tomato;
+  border: 1px solid tomato
+}
+.un-subscribe-btn {
+  background: darkcyan;
+  border: 1px solid #FFF
 }
