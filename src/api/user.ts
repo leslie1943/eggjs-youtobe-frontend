@@ -29,3 +29,13 @@ interface LoginOutput {
 export const login = (data: LoginInput) => {
   return request.post<LoginOutput>('/api/v1/users/login', data)
 }
+
+interface RegisterInput {
+  username: string
+  email: string
+  password: string
+}
+
+export const register = (data: RegisterInput) => {
+  return request.post<LoginOutput>('/api/v1/users', data)
+}
