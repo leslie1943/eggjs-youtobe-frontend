@@ -71,10 +71,24 @@
                   }}</a>
                 </h4>
                 <span class="secondary small"
-                  >{{ video.user.subscribersCount }} subscribers</span
+                  >{{ video.user.subscribersCount || 0 }} subscribers</span
                 >
               </div>
             </div>
+            <button
+              v-if="video.user.isSubscribed"
+              class="sc-AxirZ erzyjX un-subscribe-btn"
+              @click="onUnsubscribe"
+            >
+              Unsubscribe
+            </button>
+            <button
+              v-else
+              class="sc-AxirZ erzyjX subscribe-btn"
+              @click="onSubscribe"
+            >
+              Subscribe
+            </button>
           </div>
           <p>{{ video.user.channelDescription }}</p>
         </div>
@@ -188,6 +202,9 @@
 import { defineComponent, onMounted, ref } from 'vue'
 import { getVideo, Video, likeVideo, disLikeVideo } from '@/api/video'
 import { getVideoPlayAuth } from '@/api/vod'
+
+import { subscribe, unsubscribe } from '@/api/user'
+
 import { createPlayer } from '@/utils/video'
 import { useRoute } from 'vue-router'
 import dayjs from 'dayjs'
@@ -237,11 +254,22 @@ export default defineComponent({
       loadVideoInfo()
     }
 
+    const onSubscribe = async () => {
+      const { data } = await subscribe(video.value?.user._id as string)
+      console.info('subscribe data', data)
+      loadVideoInfo()
+    }
+    const onUnsubscribe = async () => {
+      const { data } = await unsubscribe(video.value?.user._id as string)
+      console.info('unsubscribe data', data)
+      loadVideoInfo()
+    }
+
     const formatDate = (date: Date) => {
       return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
     }
 
-    return { video, onLike, onDislike, formatDate }
+    return { video, onLike, onDislike, formatDate, onSubscribe, onUnsubscribe }
   }
 })
 </script>
