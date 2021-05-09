@@ -22,6 +22,7 @@ interface VideoAuth {
   avatar: string
   isSubscribed: boolean
   subscribersCount: number
+  channelDescription: string
 }
 
 export interface Video {
@@ -48,4 +49,12 @@ export const createVideo = (data: CreateVideoInput) => {
 
 export const getVideo = (videoId: string) => {
   return request.get<VideoPayload>(`/api/v1/videos/${videoId}`)
+}
+
+export const likeVideo = (videoId: string) => {
+  return request.post(`/api/v1/videos/${videoId}/like`)
+}
+
+export const disLikeVideo = (videoId: string) => {
+  return request.post(`/api/v1/videos/${videoId}/dislike`)
 }

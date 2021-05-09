@@ -57,33 +57,6 @@ declare module '*.vue' {
 <div class="prism-player" id="J_prismPlayer"></div>
 ```
 
-- 加入初始化代码
-```js
-  var player = new Aliplayer({
-            id: 'J_prismPlayer',
-            width: '100%',
-            autoplay: true,
-            //支持播放地址播放,此播放优先级最高
-            source : '播放url',
-            //播放方式二：点播用户推荐
-            vid : '1e067a2831b641db90d570b6480fbc40',
-            playauth : 'ddd',
-            cover: 'http://liveroom-img.oss-cn-qingdao.aliyuncs.com/logo.png',
-            encryptType:1, //当播放私有加密流时需要设置。
-            //播放方式三：仅MPS用户使用
-            vid : '1e067a2831b641db90d570b6480fbc40',
-            accId: 'dd',
-            accSecret: 'dd',
-            stsToken: 'dd',
-            domainRegion: 'dd',
-            authInfo: 'dd',
-            //播放方式四：使用STS方式播放
-            vid : '1e067a2831b641db90d570b6480fbc40',
-            accessKeyId: 'dd',
-            securityToken: 'dd',
-            accessKeySecret: 'dd',
-             region:'cn-shanghai',//eu-central-1,ap-southeast-1
-            },function(player){
-                console.log('播放器创建好了。')
-           });
-```
+
+- http://localhost:8080/#/watch/609649f1c86be959a8a996d6
+- http://localhost:8080/#/watch/60966130ba81a6364ccfde0e

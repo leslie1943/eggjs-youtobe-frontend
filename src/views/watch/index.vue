@@ -1,7 +1,8 @@
 /* eslint-disable no-new */
 <!-- src\views\watch\index.vue -->
 <template>
-  <div class=".sc-AxmLO gmtmqV">
+  <div class=".sc-AxmLO gmtmqV" v-if="video">
+    {{ video }}
     <div class="sc-fzoXWK fRnHrz">
       <div class="video-container">
         <div class="video">
@@ -10,12 +11,16 @@
           <div class="prism-player" id="J_prismPlayer"></div>
         </div>
         <div class="video-info">
-          <h3>321321</h3>
+          <h3>{{ video.title ? video.title : '' }}</h3>
           <div class="video-info-stats">
-            <p><span>0 views</span> <span>•</span> <span>12 hours ago</span></p>
+            <p>
+              <span>{{ video.viewsCount }} views</span> <span> • </span>
+              <span>{{ formatDate(video.createdAt) }}</span>
+            </p>
             <div class="likes-dislikes flex-row">
               <p class="flex-row like">
                 <svg
+                  @click="onLike"
                   viewBox="0 0 24 24"
                   preserveAspectRatio="xMidYMid meet"
                   focusable="false"
@@ -29,10 +34,11 @@
                     ></path>
                   </g>
                 </svg>
-                <span>0</span>
+                <span>{{ video.likesCount }}</span>
               </p>
               <p class="flex-row dislike" style="margin-left: 1rem">
                 <svg
+                  @click="onDislike"
                   viewBox="0 0 24 24"
                   preserveAspectRatio="xMidYMid meet"
                   focusable="false"
@@ -45,7 +51,7 @@
                     ></path>
                   </g>
                 </svg>
-                <span>0</span>
+                <span>{{ video.dislikesCount }}</span>
               </p>
             </div>
           </div>
@@ -60,15 +66,17 @@
               />
               <div class="channel-info-meta">
                 <h4>
-                  <a href="/channel/b41a4163-979c-4224-a879-0a6e009af309"
-                    >lipengzhou</a
-                  >
+                  <a href="/channel/b41a4163-979c-4224-a879-0a6e009af309">{{
+                    video.user.username
+                  }}</a>
                 </h4>
-                <span class="secondary small">5 subscribers</span>
+                <span class="secondary small"
+                  >{{ video.user.subscribersCount }} subscribers</span
+                >
               </div>
             </div>
           </div>
-          <p>321321</p>
+          <p>{{ video.user.channelDescription }}</p>
         </div>
         <div class="sc-fzoyTs fNzLaQ">
           <h3>2 comments</h3>
@@ -178,53 +186,11 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue'
-import { getVideo, Video } from '@/api/video'
-import { getVideoPlayAuth, VideoPlayAuthPayload } from '@/api/vod'
+import { getVideo, Video, likeVideo, disLikeVideo } from '@/api/video'
+import { getVideoPlayAuth } from '@/api/vod'
+import { createPlayer } from '@/utils/video'
 import { useRoute } from 'vue-router'
-
-const createPlayer = (data: VideoPlayAuthPayload) => {
-  let onReady: (value: unknown) => void
-  const p = new Promise((resolve) => {
-    onReady = resolve
-  })
-  // eslint-disable-next-line no-new
-  new window.Aliplayer(
-    {
-      id: 'J_prismPlayer',
-      width: '100%',
-      height: '500px',
-      autoplay: true,
-      // 支持播放地址播放,此播放优先级最高
-      //   source: '播放url',
-      //   播放方式二: 点播用户推荐
-      vid: data.VideoMeta.VideoId,
-      playauth: data.PlayAuth,
-      cover: data.VideoMeta.CoverURL
-      //   encryptType: 1 // 当播放私有加密流时需要设置.
-
-      // 播放方式三: 仅MPS用户使用
-      //   vid: '1e067a2831b641db90d570b6480fbc40',
-      //   accId: 'dd',
-      //   accSecret: 'dd',
-      //   stsToken: 'dd',
-      //   domainRegion: 'dd',
-      //   authInfo: 'dd',
-
-      // 播放方式四: 使用STS方式播放
-      //   vid: '1e067a2831b641db90d570b6480fbc40',
-      //   accessKeyId: 'dd',
-      //   securityToken: 'dd',
-      //   accessKeySecret: 'dd',
-      //   region: 'cn-shanghai' // eu-central-1,ap-southeast-1
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function (player: any) {
-      onReady(player)
-    }
-  )
-
-  return p
-}
+import dayjs from 'dayjs'
 
 /**
  * 先获取视频详情, 拿到 vodId, 然后再去获取阿里云视频
@@ -234,18 +200,23 @@ export default defineComponent({
   setup() {
     const video = ref<Video | null>(null)
     const route = useRoute()
-
+    // 从服务器端 获取视频详情
     const loadVideoInfo = async () => {
       const videoId = route.params.videoId as string
       const { data } = await getVideo(videoId)
       video.value = data.video
     }
 
+    /**
+     * 播放视频
+     * 1: 获取 从阿里云服务器 获取播放凭证
+     * 2: 获取视频, 播放视频
+     */
     const playVideo = async (vodVideoId: string) => {
       // 获取视频播放凭证
       const { data } = await getVideoPlayAuth(vodVideoId)
-      createPlayer(data)
       // 创建播放器, 播放视频
+      createPlayer(data)
     }
 
     onMounted(async () => {
@@ -255,7 +226,22 @@ export default defineComponent({
       playVideo(video.value?.vodVideoId as string)
     })
 
-    return { video }
+    // 喜欢
+    const onLike = async () => {
+      await likeVideo(video.value?._id as string)
+      loadVideoInfo()
+    }
+
+    const onDislike = async () => {
+      await disLikeVideo(video.value?._id as string)
+      loadVideoInfo()
+    }
+
+    const formatDate = (date: Date) => {
+      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
+    }
+
+    return { video, onLike, onDislike, formatDate }
   }
 })
 </script>
