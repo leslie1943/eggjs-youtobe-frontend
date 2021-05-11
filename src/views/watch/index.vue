@@ -1,8 +1,6 @@
-/* eslint-disable no-new */
 <!-- src\views\watch\index.vue -->
 <template>
   <div class=".sc-AxmLO gmtmqV" v-if="video">
-    {{ video }}
     <div class="sc-fzoXWK fRnHrz">
       <div class="video-container">
         <div class="video">
@@ -61,7 +59,7 @@
             <div class="channel-info flex-row">
               <img
                 class="avatar md"
-                src="https://img1.baidu.com/it/u=4026833186,446874750&fm=26&fmt=auto&gp=0.jpg"
+                src="https://img1.baidu.com/it/u=1518705398,2823507888&fm=26&fmt=auto&gp=0.jpg"
                 alt="channel avatar"
               />
               <div class="channel-info-meta">
@@ -93,47 +91,46 @@
           <p>{{ video.user.channelDescription }}</p>
         </div>
         <div class="sc-fzoyTs fNzLaQ">
-          <h3>2 comments</h3>
+          <h3>{{ commentTotal }} comments</h3>
+          <!-- Add comment -->
           <div class="add-comment">
             <img
-              src="https://img1.baidu.com/it/u=4026833186,446874750&fm=26&fmt=auto&gp=0.jpg"
+              src="https://img2.baidu.com/it/u=4108958279,831681952&fm=26&fmt=auto&gp=0.jpg"
               alt="avatar"
-            /><textarea placeholder="Add a public comment"></textarea>
+            /><textarea
+              v-model="content"
+              placeholder="Add a public comment"
+              @keydown.enter="addComment"
+            ></textarea>
           </div>
-          <div class="comment">
-            <a href="/channel/1311e080-5e0e-4b4b-bb83-08f1a6837649"
-              ><img
-                src="https://img1.baidu.com/it/u=4026833186,446874750&fm=26&fmt=auto&gp=0.jpg"
-                alt="avatar"
-            /></a>
-            <div class="comment-info">
-              <p class="secondary">
-                <span
-                  ><a href="/channel/1311e080-5e0e-4b4b-bb83-08f1a6837649"
-                    >akshaydsvg</a
-                  ></span
-                ><span style="margin-left: 0.6rem">11 hours ago</span>
-              </p>
-              <p>vnd</p>
+          <!-- Display comments -->
+          <template v-if="comments.length > 0">
+            <div v-for="comment in comments" :key="comment.id" class="comment">
+              <!-- avatar -->
+              <router-link :to="`/channel/${comment.user._id}`">
+                <img
+                  :src="
+                    comment.user.avatar ||
+                    'https://img2.baidu.com/it/u=1613890855,3909327698&fm=26&fmt=auto&gp=0.jpg'
+                  "
+                  alt="avatar"
+                />
+              </router-link>
+              <div class="comment-info">
+                <p class="secondary">
+                  <span>
+                    <router-link :to="comment.user._id">{{
+                      comment.user.username
+                    }}</router-link> </span
+                  ><span style="margin-left: 0.6rem">{{
+                    formatDate(comment.createdAt)
+                  }}</span>
+                </p>
+                <p>{{ comment.content }}</p>
+              </div>
             </div>
-          </div>
-          <div class="comment">
-            <a href="/channel/1311e080-5e0e-4b4b-bb83-08f1a6837649"
-              ><img
-                src="https://img1.baidu.com/it/u=4026833186,446874750&fm=26&fmt=auto&gp=0.jpg"
-                alt="avatar"
-            /></a>
-            <div class="comment-info">
-              <p class="secondary">
-                <span
-                  ><a href="/channel/1311e080-5e0e-4b4b-bb83-08f1a6837649"
-                    >akshaydsvg</a
-                  ></span
-                ><span style="margin-left: 0.6rem">11 hours ago</span>
-              </p>
-              <p>test</p>
-            </div>
-          </div>
+          </template>
+          <template v-else> No comments yet 😭 </template>
         </div>
       </div>
       <div class="related-videos">
@@ -142,7 +139,7 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://img2.baidu.com/it/u=1602883503,613387145&fm=26&fmt=auto&gp=0.jpg"
+              src="https://img2.baidu.com/it/u=4172115989,873202582&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
@@ -160,7 +157,7 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://img2.baidu.com/it/u=1782783895,4075316672&fm=26&fmt=auto&gp=0.jpg"
+              src="https://img0.baidu.com/it/u=4175967163,238978539&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
@@ -178,7 +175,7 @@
           ><div class="sc-fzozJi dteCCc">
             <img
               class="thumb"
-              src="https://img0.baidu.com/it/u=728075063,1631308747&fm=224&fmt=auto&gp=0.jpg"
+              src="https://img0.baidu.com/it/u=3702920847,3662520481&fm=26&fmt=auto&gp=0.jpg"
               alt="thumbnail"
             />
             <div class="video-info-container">
@@ -199,77 +196,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue'
-import { getVideo, Video, likeVideo, disLikeVideo } from '@/api/video'
-import { getVideoPlayAuth } from '@/api/vod'
+import { defineComponent } from 'vue'
+import { useVideo } from '@/model/video'
 
-import { subscribe, unsubscribe } from '@/api/user'
-
-import { createPlayer } from '@/utils/video'
-import { useRoute } from 'vue-router'
-import dayjs from 'dayjs'
-
-/**
- * 先获取视频详情, 拿到 vodId, 然后再去获取阿里云视频
- */
 export default defineComponent({
   name: 'WatchIndex',
   setup() {
-    const video = ref<Video | null>(null)
-    const route = useRoute()
-    // 从服务器端 获取视频详情
-    const loadVideoInfo = async () => {
-      const videoId = route.params.videoId as string
-      const { data } = await getVideo(videoId)
-      video.value = data.video
+    return {
+      ...useVideo()
     }
-
-    /**
-     * 播放视频
-     * 1: 获取 从阿里云服务器 获取播放凭证
-     * 2: 获取视频, 播放视频
-     */
-    const playVideo = async (vodVideoId: string) => {
-      // 获取视频播放凭证
-      const { data } = await getVideoPlayAuth(vodVideoId)
-      // 创建播放器, 播放视频
-      createPlayer(data)
-    }
-
-    onMounted(async () => {
-      // 加载视频详情
-      await loadVideoInfo()
-      // 播放视频
-      playVideo(video.value?.vodVideoId as string)
-    })
-
-    // 喜欢
-    const onLike = async () => {
-      await likeVideo(video.value?._id as string)
-      loadVideoInfo()
-    }
-
-    const onDislike = async () => {
-      await disLikeVideo(video.value?._id as string)
-      loadVideoInfo()
-    }
-
-    const onSubscribe = async () => {
-      const { data } = await subscribe(video.value?.user._id as string)
-      console.info('subscribe data', data)
-      loadVideoInfo()
-    }
-    const onUnsubscribe = async () => {
-      const { data } = await unsubscribe(video.value?.user._id as string)
-      console.info('unsubscribe data', data)
-      loadVideoInfo()
-    }
-
-    const formatDate = (date: Date) => {
-      return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
-    }
-
-    return { video, onLike, onDislike, formatDate, onSubscribe, onUnsubscribe }
   }
 })
 </script>

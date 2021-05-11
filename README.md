@@ -57,6 +57,10 @@ declare module '*.vue' {
 <div class="prism-player" id="J_prismPlayer"></div>
 ```
 
+moon@sina.com
+leslie@sina.com
 
 - http://localhost:8080/#/watch/609649f1c86be959a8a996d6
 - http://localhost:8080/#/watch/60966130ba81a6364ccfde0e
+- http://localhost:8080/#/watch/609939cdbd4b975c38cf8825
+- http://localhost:8080/#/watch/609939cdbd4b975c38cf8825
