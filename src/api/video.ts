@@ -3,6 +3,7 @@
  */
 
 import { request } from '@/utils/request'
+import { User } from './user'
 
 // 创建视频: 接收参数格式
 export interface CreateVideoInput {
@@ -57,4 +58,21 @@ export const likeVideo = (videoId: string) => {
 
 export const disLikeVideo = (videoId: string) => {
   return request.post(`/api/v1/videos/${videoId}/dislike`)
+}
+
+export interface Comment {
+  content: string
+  user: User
+}
+interface Comments {
+  comments: Array<Comment>
+  commentTotal: number
+}
+
+export const getComments = (videoId: string) => {
+  return request.get<Comments>(`/api/v1/videos/${videoId}/comments`)
+}
+
+export const createComment = (videoId: string, content: string) => {
+  return request.post(`/api/v1/videos/${videoId}/comments`, { content })
 }
