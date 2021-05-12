@@ -69,10 +69,17 @@ interface Comments {
   commentTotal: number
 }
 
+// 获取 评论列表
 export const getComments = (videoId: string) => {
   return request.get<Comments>(`/api/v1/videos/${videoId}/comments`)
 }
 
+// 添加评论
 export const createComment = (videoId: string, content: string) => {
   return request.post(`/api/v1/videos/${videoId}/comments`, { content })
+}
+
+// 删除评论
+export const deleteComment = (videoId: string, commentId: string) => {
+  return request.delete(`/api/v1/videos/${videoId}/comments/${commentId}`)
 }

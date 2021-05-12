@@ -1,5 +1,5 @@
 import { onMounted, ref } from 'vue'
-import { getVideo, Video, likeVideo, disLikeVideo, getComments, Comment, createComment } from '@/api/video'
+import { getVideo, Video, likeVideo, disLikeVideo, getComments, Comment, createComment, deleteComment } from '@/api/video'
 import { getVideoPlayAuth } from '@/api/vod'
 
 import { subscribe, unsubscribe } from '@/api/user'
@@ -86,6 +86,12 @@ export const useVideo = () => {
     }
   }
 
+  // 删除评论
+  const removeComment = async (commentId: string) => {
+    await deleteComment(video.value?._id as string, commentId)
+    loadComments()
+  }
+
   // 格式化日期
   const formatDate = (date: Date) => {
     return dayjs(date).format('YYYY-MM-DD HH:mm:ss')
@@ -102,6 +108,7 @@ export const useVideo = () => {
     comments,
     commentTotal,
     content,
-    addComment
+    addComment,
+    removeComment
   }
 }
