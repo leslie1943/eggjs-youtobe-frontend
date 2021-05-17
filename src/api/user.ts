@@ -1,4 +1,5 @@
 import { request } from '@/utils/request'
+import { Video } from './video'
 
 // 登录参数
 interface LoginInput {
@@ -56,4 +57,12 @@ export const subscribe = (userId: string) => {
 
 export const unsubscribe = (userId: string) => {
   return request.delete<SubscribeUser>(`/api/v1/users/${userId}/subscribe`)
+}
+
+interface FeedVideos {
+  videos: Array<Video>
+  videosCount: number
+}
+export const getUserFeedVideos = () => {
+  return request.get<FeedVideos>('/api/v1/user/videos/feed')
 }
