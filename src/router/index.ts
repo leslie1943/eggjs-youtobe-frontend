@@ -10,35 +10,35 @@ const routes: Array<RouteRecordRaw> = [
       {
         path: '', // 默认子路由
         name: 'home',
-        component: () =>
-          import(/* webpackChunkName: "home" */ '@/views/home/index.vue')
+        component: () => import(/* webpackChunkName: "home" */ '@/views/home/index.vue')
       },
       {
         path: 'profile', //
         name: 'profile',
-        component: () =>
-          import(/* webpackChunkName: "profile" */ '@/views/profile/index.vue'),
+        component: () => import(/* webpackChunkName: "profile" */ '@/views/profile/index.vue'),
         meta: { requiresAuth: true }
       },
       {
         path: 'watch/:videoId', //
         name: 'watch',
-        component: () =>
-          import(/* webpackChunkName: "watch" */ '@/views/watch/index.vue')
+        component: () => import(/* webpackChunkName: "watch" */ '@/views/watch/index.vue')
+      },
+      {
+        path: 'feed/liked_videos', //
+        name: 'feed/liked_videos',
+        component: () => import(/* webpackChunkName: "feed/liked_videos" */ '@/views/feed/liked_videos.vue')
       }
     ]
   },
   {
     path: '/login',
     name: 'login',
-    component: () =>
-      import(/* webpackChunkName: "login" */ '@/views/login/index.vue')
+    component: () => import(/* webpackChunkName: "login" */ '@/views/login/index.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () =>
-      import(/* webpackChunkName: "register" */ '@/views/register/index.vue')
+    component: () => import(/* webpackChunkName: "register" */ '@/views/register/index.vue')
   }
 ]
 
